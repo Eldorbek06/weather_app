@@ -1,4 +1,10 @@
 // import axios from "axios"
+new Swiper('.swiper', {
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+    }
+})
 // let h1 = document.querySelector('h1')
 // let wind = document.querySelector('#wind')
 // let hum = document.querySelector('#hum')
