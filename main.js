@@ -1,36 +1,61 @@
-// import axios from "axios"
+// let API_KEY = '4f9dc827356314629e9dd48d2cebf4fa'
+
+import axios from "axios"
+
 new Swiper('.swiper', {
+    navigation: {
+        nextEl: '.info_block',
+        prevEl: 'section header button'
+    },
     pagination: {
         el: '.swiper-pagination',
         clickable: true
-    }
+    },
+    touchRatio: 0
 })
-// let h1 = document.querySelector('h1')
-// let wind = document.querySelector('#wind')
-// let hum = document.querySelector('#hum')
-// let searchInp = document.querySelector('input')
-// let searchBTN = document.querySelector('#searchBTN')
 
-// let API_KEY = '4f9dc827356314629e9dd48d2cebf4fa'
+let API_KEY = 'e2e72e00cf3965575c262fa94bf0ea84'
+let searchInp = document.querySelector('input')
+let searchBTN = searchInp.nextElementSibling
+let main_page_date = document.querySelector('.info_block .date span')
+let main_page_img = document.querySelector('#main_page_img')
+let main_page_deg = document.querySelector('.info_block h1')
+let main_page_wind = document.querySelector('#wind_view')
+let main_page_hum = document.querySelector('#hum_view')
+let byHours_deg = document.querySelector('.byHours').firstElementChild
+let byHours_img = document.querySelector('.byHours img')
+let byHours_time = document.querySelector('.byHours').lastElementChild
+let second_page_date  = document.querySelector('header p')
+let byDays_date = document.querySelector('.byDays').firstElementChild
+let byDays_img = document.querySelector('.byDays img')
+let byDays_deg = document.querySelector('.byDays').lastElementChild
+let city = searchInp.value
+let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+let newDate = new Date()
 
-// getWeather()
-// function getWeather(city = "samarkand") {
-//     axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
-//     .then(({data}) => {
-//         console.log(data);
-//         h1.innerHTML = Math.round(data.main.temp) + "°"
-//         wind.innerHTML = `${data.wind.speed} km/h`
-//         hum.innerHTML = `${data.main.humidity} %`
-//     })
-// }
 
-// axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=samarkand&appid=${API_KEY}&units=metric`)
-//     .then(res => console.log(res))
+second_page_date.innerHTML = `${months[newDate.getMonth()]}, ${newDate.getDate()}`
+main_page_date.innerHTML = `${newDate.getDate()} ${months[newDate.getMonth()]}`
+
+getWeather()
+function getWeather(city = "samarkand") {
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
+    .then(({data}) => {
+        main_page_deg.innerHTML = Math.round(data.main.temp) + "°"
+        main_page_wind.innerHTML = `${data.wind.speed} km/h`
+        main_page_hum.innerHTML = `${data.main.humidity} %`
+    })
+}
+
+axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=samarkand&appid=${API_KEY}&units=metric`)
+    .then(({data}) => {
+        console.log(data.list)
+        
+    })
 
 // searchBTN.onclick = () => {
 //     getWeather(searchInp.value)
 // }
-
 
 // document.addEventListener('touchstart', handleTouchStart, false);        
 // document.addEventListener('touchmove', handleTouchMove, false);
@@ -80,15 +105,15 @@ new Swiper('.swiper', {
 //     yDown = null;                                             
 // };
 
-// // console.log(new Date());
+// console.log(new Date());
 
 
-// // switch(month) {
-// //     case 0:
-// //         return 'January'
-// //         break
-// //     case 0:
-// //         return 'January'
-// //     case 0:
-// //         return 'January'
-// // }
+// switch(month) {
+//     case 0:
+//         return 'January'
+//         break
+//     case 0:
+//         return 'January'
+//     case 0:
+//         return 'January'
+// }
