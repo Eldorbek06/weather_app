@@ -29,7 +29,8 @@ let second_page_date  = document.querySelector('header p')
 let byDays_date = document.querySelector('.byDays').firstElementChild
 let byDays_img = document.querySelector('.byDays img')
 let byDays_deg = document.querySelector('.byDays').lastElementChild
-let city = searchInp.value
+let form = document.forms.search
+let defaultCity = 'samarkand'
 let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 let newDate = new Date()
 
@@ -37,21 +38,26 @@ let newDate = new Date()
 second_page_date.innerHTML = `${months[newDate.getMonth()]}, ${newDate.getDate()}`
 main_page_date.innerHTML = `${newDate.getDate()} ${months[newDate.getMonth()]}`
 
-getWeather()
-function getWeather(city = "samarkand") {
+getWeather(defaultCity)
+function getWeather(city) {
     axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
-    .then(({data}) => {
-        main_page_deg.innerHTML = Math.round(data.main.temp) + "°"
-        main_page_wind.innerHTML = `${data.wind.speed} km/h`
-        main_page_hum.innerHTML = `${data.main.humidity} %`
+    .then(res => {
+            main_page_deg.innerHTML = Math.round(res.data.main.temp) + "°"
+            main_page_wind.innerHTML = `${res.data.wind.speed} km/h`
+            main_page_hum.innerHTML = `${res.data.main.humidity} %`
     })
 }
 
-axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=samarkand&appid=${API_KEY}&units=metric`)
-    .then(({data}) => {
-        console.log(data.list)
-        
-    })
+form.onsubmit = (e) => {
+    e.preventDefault()
+    getWeather(searchInp.value.trim())
+    form.reset()
+} 
+
+// axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=samarkand&appid=${API_KEY}&units=metric`)
+//     .then(({data}) => {
+//         console.log(data.list)
+//     })
 
 // searchBTN.onclick = () => {
 //     getWeather(searchInp.value)
