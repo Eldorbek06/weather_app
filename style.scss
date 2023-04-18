@@ -22,10 +22,6 @@ body {
     align-items: center;
     justify-content: space-between;
 
-    &>img {
-        width: 240px;
-    }
-
     &:last-child {
         justify-content: start;
         gap: 20px;
