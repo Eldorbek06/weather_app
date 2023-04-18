@@ -23,8 +23,8 @@ let main_page_wind = document.querySelector('#wind_view')
 let main_page_hum = document.querySelector('#hum_view')
 let second_page_date  = document.querySelector('header p')
 let form = document.forms.search
-let byDays_cont = document.querySelector('#sec_1 main')
-let byHours_cont = document.querySelector('#sec_2 main')
+let byDays_cont = document.querySelector('#sec_2 main')
+let byHours_cont = document.querySelector('#sec_1 main')
 let defaultCity = 'samarkand'
 let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 let newDate = new Date()
@@ -53,22 +53,43 @@ form.onsubmit = (e) => {
 
 getForecastWeather(defaultCity)
 function getForecastWeather(city) {
-axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`)
+    axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`)
     .then(({data}) => {
-		console.log(data);
-        let today = data.list.filter(el => newDate.getDate() === +el.dt_txt.slice(8,10))
-		byDays_cont.innerHTML = ''
-        for(let item of today){
-            byDays_cont.innerHTML += 
-			`
+        let today = []
+        let otherDays = []
+        data.list.filter(el => {
+            let day = +el.dt_txt.slice(8,10)
+            if(newDate.getDate() === day){
+                today.push(el)
+            }else{
+                otherDays.push(el)
+            } 
+        })
+        reload(today, byHours_cont)
+    })
+}
+
+function reload(arr, place) {
+    place.innerHTML = ''
+    for(let item of arr){
+        if(+item.dt_txt.slice(8, 10) === newDate.getDate()){
+            place.innerHTML += `
             <div class="byHours">
-                <p>${Math.round(item.main.temp)}°C</p>
-                <img src="https://openweathermap.org/img/wn/${item.weather[0]['icon']}.png" alt="image">
-                <p>${item.dt_txt.slice(11, 16)}</p>
+            <p>${Math.round(item.main.temp)}°C</p>
+            <img src="https://openweathermap.org/img/wn/${item.weather[0]['icon']}.png" alt="image">
+            <p>${item.dt_txt.slice(11, 16)}</p>
+            </div>
+            `
+        } else{
+            place.innerHTML += `
+            <div class="byHours">
+            <p>${item.dt_txt}°C</p>
+            <img src="https://openweathermap.org/img/wn/${item.weather[0]['icon']}.png" alt="image">
+            <p>${Math.round(item.main.temp)}°C</p>
             </div>
             `
         }
-    })
+    }
 }
 
 // icons url https://openweathermap.org/img/wn/02n.png
